@@ -1,0 +1,25 @@
+const fs=require('node:fs');
+const vm=require('node:vm');
+const assert=require('node:assert/strict');
+const html=fs.readFileSync(__dirname+'/index.html','utf8');
+const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
+const logic=script.slice(0,script.indexOf('const $='));
+vm.runInNewContext(logic+`;globalThis.data={products,rates,calculate}`,context={});
+const {products,rates,calculate}=context.data;
+assert.equal(products.length,29);
+assert.equal(new Set(products.map(p=>p[0])).size,29);
+assert.deepEqual(Array.from(products,p=>p[1]),[9190,9590,9690,11590,11690,8290,9090,9890,7790,8090,7990,9290,9590,7390,7690,8990,9090,5890,5990,6090,5990,7090,4890,4990,4690,4790,5690,5790,4090]);
+assert.deepEqual(Array.from(rates),[581,1222,1362,1440,1533,1627,1763,1847,1932,2032,2179,2238]);
+for(const [,price]of products)for(let n=1;n<=12;n++)for(const entry of [0,12345,price*100]){
+ const c=calculate(price*100,entry,n);
+ assert.equal(c.balance,price*100-entry);
+ assert.equal(c.total,c.payment*(n-1)+c.last+entry);
+ assert.equal(c.total,price*100+c.interest);
+ if(entry===price*100)assert.equal(c.total,entry);
+}
+const sample=calculate(829000,200000,12);
+assert.equal(sample.interest,140770);assert.equal(sample.payment,64147);assert.equal(sample.last,64153);assert.equal(sample.total,969770);
+assert.equal(calculate(829000,0,1).interest,48165);
+for(const args of [[100,-1,1],[100,101,1],[100,0,0],[100,0,13],[100,NaN,1]])assert.throws(()=>calculate(...args));
+new vm.Script(script);
+console.log('OK: 29 itens, 12 taxas, 1044 cenários e entradas inválidas verificados.');

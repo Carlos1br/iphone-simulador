@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>iPhone · Simulador de parcelas</title>
+<meta name="description" content="Compare 29 opções de iPhone e simule de 1 a 12 parcelas com entrada opcional.">
+<style>
+:root{font:16px system-ui,sans-serif;color:#172439;background:#f2f5fa}*{box-sizing:border-box}body{margin:0}main{max-width:1050px;margin:auto;padding:48px 22px}header{margin-bottom:32px}.tag{color:#366753;font-weight:700;font-size:.8rem;letter-spacing:.12em}h1{font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.05em;margin:10px 0}p{color:#546176;line-height:1.6}.layout{display:grid;grid-template-columns:1fr 1fr;gap:22px}.card{background:white;border:1px solid #dce2ec;border-radius:22px;padding:26px}label{display:block;font-weight:650;margin:20px 0 8px}select,input[type=number]{width:100%;padding:13px;border:1px solid #aab7c8;border-radius:10px;background:#fff;font:inherit;color:inherit}input[type=checkbox]{accent-color:#226447;width:18px;height:18px;vertical-align:middle}input[type=range]{width:100%;accent-color:#226447}.check{font-size:.93rem}h2{font-size:1.1rem;margin:0 0 18px}.hero{background:#163e31;color:#fff}.hero p{color:#d1e6db}.amount{font-size:clamp(2.1rem,5vw,3rem);font-weight:750;letter-spacing:-.04em;margin:8px 0}.summary{display:grid;grid-template-columns:1fr auto;gap:15px;margin:28px 0}.summary dt{color:#d1e6db}.summary dd{margin:0;text-align:right}button{border:0;background:#e0f7b0;color:#193522;border-radius:10px;padding:14px 20px;font:inherit;font-weight:700;cursor:pointer;width:100%}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #7e9cde;outline-offset:3px}.table-card{margin-top:22px;overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap}th,td{padding:13px 10px;text-align:right;border-bottom:1px solid #e7ecf3}th:first-child,td:first-child{text-align:left}th{font-size:.8rem;color:#546176}tr.active{background:#edf6e5;font-weight:700}caption{text-align:left;margin-bottom:15px;font-weight:700}#error{color:#a5192c;min-height:1.5em}footer{font-size:.85rem;margin-top:24px;color:#546176}#copyStatus{min-height:1.5em;font-size:.85rem}@media(max-width:730px){main{padding:28px 16px}.layout{grid-template-columns:1fr}.card{padding:21px}th,td{padding:12px 8px}}
+</style>
+</head>
+<body><main>
+<header><span class="tag">SEU PRÓXIMO IPHONE</span><h1>Escolha. Simule. Compare.</h1><p>29 opções, entrada do seu jeito e todas as parcelas na mesma tela.</p></header>
+<div class="layout"><section class="card" aria-labelledby="choose"><h2 id="choose">Monte sua simulação</h2>
+<label class="check"><input type="checkbox" id="pro" checked> Mostrar somente versões Pro</label>
+<label for="model">Aparelho, capacidade e cor</label><select id="model"></select>
+<label class="check"><input type="checkbox" id="hasEntry"> Adicionar entrada</label>
+<div id="entryWrap" hidden><label for="entry">Entrada (R$)</label><input id="entry" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
+<label for="months">Parcelamento: <output id="monthsLabel">12x</output></label><input id="months" type="range" min="1" max="12" step="1" value="12">
+<p id="error" role="alert"></p><p>O acréscimo é aplicado uma única vez sobre o saldo após a entrada. As taxas são as que você informou.</p></section>
+<section class="card hero" aria-labelledby="result"><h2 id="result">Sua simulação</h2><div aria-live="polite" id="resultArea"><p id="selected"></p><div class="amount" id="payment"></div><p id="rate"></p><dl class="summary"><dt>Preço do aparelho</dt><dd id="price"></dd><dt>Entrada</dt><dd id="down"></dd><dt>Saldo financiado</dt><dd id="balance"></dd><dt>Acréscimo</dt><dd id="interest"></dd><dt>Total com entrada</dt><dd id="total"></dd></dl><p id="rounding"></p></div><button id="copy" type="button">Copiar simulação</button><p id="copyStatus" role="status"></p><textarea id="copyFallback" aria-label="Simulação para copiar manualmente" readonly hidden style="width:100%;height:160px"></textarea></section></div>
+<section class="card table-card"><table><caption>Compare de 1 a 12 parcelas</caption><thead><tr><th scope="col">Parcelas</th><th scope="col">Taxa total</th><th scope="col">Parcela*</th><th scope="col">Acréscimo</th><th scope="col">Total com entrada</th></tr></thead><tbody id="comparison"></tbody></table><p>*Se houver diferença de centavos, a última parcela recebe o ajuste indicado na simulação.</p></section>
+<footer>Valores fornecidos pelo usuário em 03/11/2026. Cores agrupadas na mesma opção têm o mesmo preço. Taxas totais por prazo, sem capitalização mensal. Até 1x possui acréscimo de 5,81% sobre o saldo.</footer>
+</main>
+<script>
+const products = [
+['iPhone 18 Pro Max · 256GB · Branco',9190],
+['iPhone 18 Pro Max · 256GB · Bordô',9590],
+['iPhone 18 Pro Max · 256GB · Azul / Preto',9690],
+['iPhone 18 Pro Max · 512GB · Bordô / Preto / Azul',11590],
+['iPhone 18 Pro Max · 512GB · Branco',11690],
+['iPhone 18 Pro · 256GB · Bordô',8290],
+['iPhone 18 Pro · 512GB · Bordô',9090],
+['iPhone 18 Pro · 512GB · Branco',9890],
+['iPhone 17 Pro Max · 256GB · Azul / Laranja (eSIM)',7790],
+['iPhone 17 Pro Max · 256GB · Branco (eSIM)',8090],
+['iPhone 17 Pro Max · 256GB · Azul (Anatel)',7990],
+['iPhone 17 Pro Max · 512GB · Laranja (eSIM)',9290],
+['iPhone 17 Pro Max · 512GB · Azul (eSIM)',9590],
+['iPhone 17 Pro (eSIM) · 256GB · Laranja',7390],
+['iPhone 17 Pro (eSIM) · 256GB · Branco',7690],
+['iPhone 17 Pro (eSIM) · 512GB · Laranja',8990],
+['iPhone 17 Pro (eSIM) · 512GB · Azul / Branco',9090],
+['iPhone 17 · 256GB · Verde',5890],
+['iPhone 17 · 256GB · Azul / Roxo / Branco',5990],
+['iPhone 17 · 256GB · Preto',6090],
+['iPhone 17 Air (eSIM) · 256GB · Dourado / Azul / Preto / Branco',5990],
+['iPhone 16 Pro Max · 256GB · Desert',7090],
+['iPhone 16 · 128GB · Lacrado Verde',4890],
+['iPhone 16 · 128GB · Lacrado Branco / Preto',4990],
+['iPhone 16 · 128GB · CPO Rosa / Azul',4690],
+['iPhone 16 · 128GB · CPO Branco',4790],
+['iPhone 15 Pro Max (CPO) · 256GB · Branco / Preto',5690],
+['iPhone 15 Pro Max (CPO) · 256GB · Natural',5790],
+['iPhone 15 · 128GB · Azul',4090]
+];
+// Taxas em centésimos de percentual; dinheiro calculado em centavos.
+const rates = [581,1222,1362,1440,1533,1627,1763,1847,1932,2032,2179,2238];
+function calculate(price,entry,months){
+ if(!Number.isSafeInteger(price)||!Number.isSafeInteger(entry)||entry<0||entry>price||!Number.isInteger(months)||months<1||months>12) throw new Error('Informe uma entrada entre zero e o preço do aparelho.');
+ const balance=price-entry, interest=Math.round(balance*rates[months-1]/10000), financed=balance+interest;
+ const payment=Math.floor(financed/months),last=financed-payment*(months-1);
+ return {balance,interest,payment,last,total:entry+financed};
+}
+const $=id=>document.getElementById(id);
+const money=cents=>(cents/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const percent=n=>(n/100).toLocaleString('pt-BR',{minimumFractionDigits:2})+'%';
+let current=null;
+function populate(){
+ const previous=$('model').value;
+ $('model').replaceChildren();
+ products.forEach(([name,price],i)=>{if(!$('pro').checked||name.includes('Pro')){const option=document.createElement('option');option.value=i;option.textContent=name+' — '+money(price*100);$('model').append(option);}});
+ if([...$('model').options].some(o=>o.value===previous)) $('model').value=previous;
+ update();
+}
+function update(){
+ const [name,priceReais]=products[Number($('model').value)];
+ const price=priceReais*100,months=Number($('months').value);
+ $('entryWrap').hidden=!$('hasEntry').checked;$('entry').max=priceReais;
+ $('monthsLabel').textContent=months+'x';$('copyStatus').textContent='';$('copyFallback').hidden=true;
+ try {
+  const raw=Number($('entry').value);
+  if($('hasEntry').checked&&(!$('entry').value.trim()||!Number.isFinite(raw)||raw<0||raw>priceReais))throw new Error('Informe uma entrada entre R$ 0,00 e '+money(price)+'.');
+  const entry=$('hasEntry').checked?Math.round(raw*100):0;
+  if($('hasEntry').checked&&Math.abs(raw*100-entry)>0.00001)throw new Error('Use no máximo duas casas decimais na entrada.');
+  const result=calculate(price,entry,months);current={name,price,entry,months,...result};
+  $('error').textContent='';$('copy').disabled=false;$('resultArea').hidden=false;
+  $('selected').textContent=name;$('payment').textContent=result.balance===0?'Quitado com a entrada':months+'x de '+money(result.payment);
+  $('rate').textContent=percent(rates[months-1])+' de acréscimo total sobre o saldo';
+  for(const [id,value] of Object.entries({price,down:entry,balance:result.balance,interest:result.interest,total:result.total})) $(id).textContent=money(value);
+  $('rounding').textContent=result.payment!==result.last?'Última parcela ajustada: '+money(result.last):'';
+  $('comparison').replaceChildren();
+  rates.forEach((r,i)=>{const c=calculate(price,entry,i+1),tr=document.createElement('tr');if(i+1===months)tr.className='active';[i+1+'x',percent(r),money(c.payment),money(c.interest),money(c.total)].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td)});$('comparison').append(tr)});
+ }catch(error){current=null;$('error').textContent=error.message;$('copy').disabled=true;$('resultArea').hidden=true;$('comparison').replaceChildren();}
+}
+$('pro').addEventListener('change',populate);
+['model','hasEntry','entry','months'].forEach(id=>$(id).addEventListener('input',update));
+$('copy').addEventListener('click',async()=>{
+ if(!current)return;const c=current;
+ const text=c.name+'\nPreço: '+money(c.price)+'\nEntrada: '+money(c.entry)+'\nSaldo: '+money(c.balance)+'\n'+c.months+'x de '+money(c.payment)+(c.last!==c.payment?' (última: '+money(c.last)+')':'')+'\nTaxa total: '+percent(rates[c.months-1])+'\nAcréscimo: '+money(c.interest)+'\nTotal com entrada: '+money(c.total);
+ try{await navigator.clipboard.writeText(text);$('copyStatus').textContent='Simulação copiada.';}catch{$('copyFallback').hidden=false;$('copyFallback').value=text;$('copyFallback').select();$('copyStatus').textContent='Selecione e copie o texto abaixo.';}
+});
+populate();
+</script></body></html>
