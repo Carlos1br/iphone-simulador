@@ -8,6 +8,8 @@ No topo, escolha o tema Branco, Preto ou Automático (acompanha o sistema). A es
 
 ## Dados
 
+O rodapé exibe um contador global de acessos via [Hits](https://github.com/silentsoft/hits), iniciado em 03/11/2026. A contagem depende do carregamento da imagem externa: não recupera visitas anteriores nem representa visitantes únicos; bloqueadores, cache e disponibilidade do serviço podem afetá-la. O simulador e seus cálculos continuam funcionando se o contador estiver indisponível. O navegador faz uma solicitação ao serviço Hits para carregar o contador, sem enviar os dados da simulação.
+
 Modelos, capacidades, cores, condições, preços e taxas foram fornecidos pelo usuário em 03/11/2026. As cores com o mesmo preço ficam agrupadas, preservando os 29 itens originais. Não houve consulta de disponibilidade ou validação comercial. Para atualizar, edite `products` e `rates` em `index.html`.
 
 Taxas totais: 1x 5,81%; 2x 12,22%; 3x 13,62%; 4x 14,40%; 5x 15,33%; 6x 16,27%; 7x 17,63%; 8x 18,47%; 9x 19,32%; 10x 20,32%; 11x 21,79%; 12x 22,38%.
