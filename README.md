@@ -4,6 +4,8 @@ Abra `index.html` no navegador. Funciona sem instalação, backend, internet ou 
 
 ## Aparência e celular
 
+O botão **Enviar pelo WhatsApp** abre `wa.me` com uma mensagem contendo a opção selecionada, preço, entrada, saldo, prazo, taxa, acréscimo e total (incluindo o ajuste da última parcela). Você escolhe o destinatário e confirma o envio no WhatsApp. Não há destinatário fixo nem envio automático. Se houver uma entrada inválida, o botão fica indisponível. A opção de copiar permanece disponível.
+
 No topo, escolha o tema Branco, Preto ou Automático (acompanha o sistema). A escolha é salva neste navegador quando o armazenamento local está disponível. No celular, o formulário e o resultado ficam em uma coluna, com controles maiores para toque. A comparação se transforma em cartões que cabem na tela, destacando o prazo selecionado.
 
 ## Dados

@@ -22,4 +22,14 @@ assert.equal(sample.interest,140770);assert.equal(sample.payment,64147);assert.e
 assert.equal(calculate(829000,0,1).interest,48165);
 for(const args of [[100,-1,1],[100,101,1],[100,0,0],[100,0,13],[100,NaN,1]])assert.throws(()=>calculate(...args));
 new vm.Script(script);
+const shareLogic=script.slice(script.indexOf('const money='),script.indexOf('let current=null;'));
+vm.runInNewContext(shareLogic+';globalThis.share={simulationMessage,whatsappUrl}',shareContext={rates});
+const example={name:'iPhone 18 Pro · 256GB · Bordô / Branco',price:829000,entry:200000,months:12,...sample};
+const message=shareContext.share.simulationMessage(example);
+assert.ok(message.includes('641,53'));assert.ok(message.includes('9.697,70'));
+const shareUrl=new URL(shareContext.share.whatsappUrl(example));
+assert.equal(shareUrl.origin,'https://wa.me');assert.ok(shareUrl.searchParams.get('text').includes(example.name));assert.ok(shareUrl.searchParams.get('text').includes(message));
+const paid=shareContext.share.simulationMessage({...example,entry:829000,...calculate(829000,829000,12)});
+assert.ok(paid.includes('Quitado integralmente'));assert.ok(!paid.includes('12x'));
 console.log('OK: 29 itens, 12 taxas, 1044 cenários e entradas inválidas verificados.');
+console.log('OK: mensagem do WhatsApp, caracteres especiais, última parcela e quitação integral verificados.');
