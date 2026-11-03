@@ -4,7 +4,7 @@ Abra `index.html` no navegador. Funciona sem instalação, backend, internet ou 
 
 ## Aparência e celular
 
-O botão **Enviar pelo WhatsApp** abre `wa.me` com uma mensagem contendo a opção selecionada, preço, entrada, saldo, prazo, taxa, acréscimo e total (incluindo o ajuste da última parcela). Você escolhe o destinatário e confirma o envio no WhatsApp. Não há destinatário fixo nem envio automático. Se houver uma entrada inválida, o botão fica indisponível. A opção de copiar permanece disponível.
+O botão **Enviar pelo WhatsApp** abre `wa.me` com uma mensagem contendo a opção selecionada, preço, entrada, saldo, prazo, taxa, acréscimo e total (incluindo o ajuste da última parcela). O site publicado direciona ao contato configurado no secret `WHATSAPP_NUMBER`. Você confirma o envio no WhatsApp. Se houver uma entrada inválida, o botão fica indisponível. A opção de copiar permanece disponível.
 
 No topo, escolha o tema Branco, Preto ou Automático (acompanha o sistema). A escolha é salva neste navegador quando o armazenamento local está disponível. No celular, o formulário e o resultado ficam em uma coluna, com controles maiores para toque. A comparação se transforma em cartões que cabem na tela, destacando o prazo selecionado.
 
@@ -30,7 +30,11 @@ Exemplo: R$ 8.290,00 com R$ 2.000,00 de entrada em 12x: saldo R$ 6.290,00; acré
 
 ## GitHub Pages
 
-Envie `index.html`, `README.md` e `.nojekyll` para a raiz da branch `main`. Em Settings → Pages, selecione Deploy from a branch, branch `main`, pasta `/ (root)` e salve. Nenhuma etapa de compilação é necessária.
+O GitHub Pages usa GitHub Actions (`.github/workflows/pages.yml`). Configure o secret de repositório `WHATSAPP_NUMBER` com DDI, DDD e número, somente dígitos. O workflow verifica os cálculos, executa `node build.cjs` e publica a pasta `dist`.
+
+O número é mantido no secret na configuração, mas fica necessariamente público no HTML e no link do WhatsApp da versão publicada. Não use esta técnica para chaves privadas ou senhas. A configuração não envia mensagens automaticamente.
+
+Para preparar a versão local com destinatário fixo, defina a variável de ambiente `WHATSAPP_NUMBER`, execute `node build.cjs` e abra `dist/index.html`. O `index.html` original sem preparação mantém o compartilhamento sem destinatário fixo. Alterações no secret exigem uma nova execução do workflow.
 
 ## Verificação
 

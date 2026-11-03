@@ -1,0 +1,11 @@
+const fs=require('node:fs');
+const path=require('node:path');
+const number=process.env.WHATSAPP_NUMBER;
+if(!number||!/^[1-9]\d{6,14}$/.test(number))throw new Error('Configure WHATSAPP_NUMBER com DDI, DDD e número, somente dígitos.');
+const source=fs.readFileSync(path.join(__dirname,'index.html'),'utf8');
+if(!source.includes('__WHATSAPP_NUMBER__'))throw new Error('Marcador do WhatsApp ausente.');
+const output=path.join(__dirname,'dist');
+fs.mkdirSync(output,{recursive:true});
+fs.writeFileSync(path.join(output,'index.html'),source.replace('__WHATSAPP_NUMBER__',number));
+fs.writeFileSync(path.join(output,'.nojekyll'),'');
+console.log('Site preparado para publicação.');

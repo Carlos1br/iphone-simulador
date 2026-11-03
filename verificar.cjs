@@ -1,7 +1,7 @@
 const fs=require('node:fs');
 const vm=require('node:vm');
 const assert=require('node:assert/strict');
-const html=fs.readFileSync(__dirname+'/index.html','utf8');
+const html=fs.readFileSync(process.argv[2]||__dirname+'/index.html','utf8');
 const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
 const logic=script.slice(0,script.indexOf('const $='));
 vm.runInNewContext(logic+`;globalThis.data={products,rates,calculate}`,context={});
@@ -29,6 +29,7 @@ const message=shareContext.share.simulationMessage(example);
 assert.ok(message.includes('641,53'));assert.ok(message.includes('9.697,70'));
 const shareUrl=new URL(shareContext.share.whatsappUrl(example));
 assert.equal(shareUrl.origin,'https://wa.me');assert.ok(shareUrl.searchParams.get('text').includes(example.name));assert.ok(shareUrl.searchParams.get('text').includes(message));
+assert.equal(shareUrl.pathname,html.includes('__WHATSAPP_NUMBER__')?'/':'/'+process.env.WHATSAPP_NUMBER);
 const paid=shareContext.share.simulationMessage({...example,entry:829000,...calculate(829000,829000,12)});
 assert.ok(paid.includes('Quitado integralmente'));assert.ok(!paid.includes('12x'));
 console.log('OK: 29 itens, 12 taxas, 1044 cenários e entradas inválidas verificados.');
