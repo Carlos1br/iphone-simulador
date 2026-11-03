@@ -4,6 +4,8 @@ Abra `index.html` no navegador. Funciona sem instalação, backend, internet ou 
 
 ## Aparência e celular
 
+Ao ativar a entrada, os botões abaixo do campo permitem escolher R$ 1.000, R$ 2.000, R$ 3.000, R$ 4.000 ou R$ 5.000. O valor selecionado fica destacado e atualiza as parcelas e a mensagem do WhatsApp. Valores acima do preço do aparelho ficam indisponíveis. Também é possível digitar uma entrada personalizada.
+
 O botão **Enviar pelo WhatsApp** abre `wa.me` com uma mensagem contendo a opção selecionada, preço, entrada, saldo, prazo, taxa, acréscimo e total (incluindo o ajuste da última parcela). O site publicado direciona ao contato configurado no secret `WHATSAPP_NUMBER`. Você confirma o envio no WhatsApp. Se houver uma entrada inválida, o botão fica indisponível. A opção de copiar permanece disponível.
 
 No topo, escolha o tema Branco, Preto ou Automático (acompanha o sistema). A escolha é salva neste navegador quando o armazenamento local está disponível. No celular, o formulário e o resultado ficam em uma coluna, com controles maiores para toque. A comparação se transforma em cartões que cabem na tela, destacando o prazo selecionado.
