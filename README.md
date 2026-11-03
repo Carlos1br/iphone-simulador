@@ -2,6 +2,10 @@
 
 Abra `index.html` no navegador. Funciona sem instalação, backend, internet ou bibliotecas externas. O filtro inicial mostra versões Pro; desmarque-o para acessar os 29 itens. Escolha o aparelho, ative a entrada se desejar e selecione de 1 a 12 parcelas. A tabela compara todos os prazos.
 
+## Aparência e celular
+
+No topo, escolha o tema Branco, Preto ou Automático (acompanha o sistema). A escolha é salva neste navegador quando o armazenamento local está disponível. No celular, o formulário e o resultado ficam em uma coluna, com controles maiores para toque. A comparação se transforma em cartões que cabem na tela, destacando o prazo selecionado.
+
 ## Dados
 
 Modelos, capacidades, cores, condições, preços e taxas foram fornecidos pelo usuário em 03/11/2026. As cores com o mesmo preço ficam agrupadas, preservando os 29 itens originais. Não houve consulta de disponibilidade ou validação comercial. Para atualizar, edite `products` e `rates` em `index.html`.
